@@ -1,32 +1,28 @@
 package pl.jpraz.product;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ProductCatalog {
-    Map<String, ProductData> products;
-    public ProductCatalog() {
-        this.products = new HashMap<>();
+    ProductStorage productStorage;
+    /// Domain / Business
+    public ProductCatalog(ProductStorage productStorage) {
+        this.productStorage = productStorage;
     }
 
 
     public String addProduct(String productId, String name) {
         ProductData newProduct = new ProductData(productId, name);
-        products.put(productId, newProduct);
-
+        productStorage.save(newProduct);
         return productId;
     }
 
     private ProductData loadProductById(String productId) {
-        return products.get(productId);
+        return productStorage.load(productId);
     }
 
     public void publish(String productId) {
-        ProductData loaded = loadProductById(productId);
+        ProductData loaded = productStorage.load(productId);
 
         if (loaded.getPrice() == null) {
             throw new CantPublishProductException();
@@ -40,10 +36,7 @@ public class ProductCatalog {
     }
 
     public List<ProductData> allPublishedProducts() {
-        return products.values()
-                .stream()
-                .filter(productData -> productData.isOnline())
-                .collect(Collectors.toList());
+        return productStorage.allPublished();
     }
 
     public void assignPrice(String productId, BigDecimal newPrice) {

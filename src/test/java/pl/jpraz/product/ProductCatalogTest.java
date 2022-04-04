@@ -45,8 +45,6 @@ public class ProductCatalogTest {
         assertEquals(BigDecimal.valueOf(10.10), loaded.getPrice());
     }
 
-
-
     @Test
     void itDenyToPublishProductWithoutImage() {
         ProductCatalog catalog = thereIsProductCatalog();
@@ -74,6 +72,7 @@ public class ProductCatalogTest {
 
 
     private ProductCatalog thereIsProductCatalog() {
-        return new ProductCatalog();
+
+        return new ProductCatalog(new MapProductStorage());
     }
 }

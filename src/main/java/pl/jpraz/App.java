@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import pl.jpraz.credit.NameTransformer;
 import pl.jpraz.credit.NamesProvider;
 import pl.jpraz.product.ProductCatalog;
+import pl.jpraz.product.MapProductStorage;
+import pl.jpraz.product.ProductStorage;
 
 import java.math.BigDecimal;
 
@@ -26,8 +28,13 @@ public class App {
     }
 
     @Bean
-    ProductCatalog createMyProductCatalog() {
-        ProductCatalog productCatalog = new ProductCatalog();
+    ProductStorage createMyProductStorage() {
+        return new MapProductStorage();
+    }
+
+    @Bean
+    ProductCatalog createMyProductCatalog(ProductStorage productStorage) {
+        ProductCatalog productCatalog = new ProductCatalog(productStorage);
         String productId1 = productCatalog.addProduct("lego-set-1", "Nice Lego set");
         productCatalog.assignImage(productId1, "https://picsum.photos/id/237/200/300");
         productCatalog.assignPrice(productId1, BigDecimal.TEN);
