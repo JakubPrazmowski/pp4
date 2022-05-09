@@ -14,7 +14,7 @@ public class InquiryController {
         return inquiryCRUD.findAll();
     }
     @GetMapping("/contacts/{id})
-    List getOneById(@PathVariable Long id){
+    Inquiry getOneById(@PathVariable Long id){
         return inquiryCRUD.getById(id);
     }
     @PostMapping("/contacts")

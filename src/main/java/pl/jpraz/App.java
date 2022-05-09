@@ -47,5 +47,10 @@ public class App {
 
         return productCatalog;
     }
+
+    @Bean
+    Sales createSales() {
+        return new Sales(new CartStorage(), new ProductDetailsProvider());
+    }
 }
 
