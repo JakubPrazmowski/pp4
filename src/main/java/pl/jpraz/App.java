@@ -49,8 +49,22 @@ public class App {
     }
 
     @Bean
-    Sales createSales() {
-        return new Sales(new CartStorage(), new ProductDetailsProvider());
+    Sales createSales(ProductDetailsProvider productDetailsProvider) {
+        return new Sales(
+                new CartStorage(),
+                productDetailsProvider
+        );
+    }
+
+    @Bean
+    ProductDetailsProvider detailsProvider(ProductCatalog catalog) {
+        return (productId -> {
+            ProductData data = catalog.getDetails(productId);
+            return java.util.Optional.of(new ProductDetails(
+                    data.getId(),
+                    data.getName(),
+                    data.getPrice()));
+        });
     }
 }
 
