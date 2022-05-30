@@ -52,7 +52,9 @@ public class App {
     Sales createSales(ProductDetailsProvider productDetailsProvider) {
         return new Sales(
                 new CartStorage(),
-                productDetailsProvider
+                productDetailsProvider,
+                new DummyPaymentGateway(),
+                new ReservationStorage()
         );
     }
 

@@ -1,51 +1,62 @@
 package pl.jpraz.sales;
 
-import java.math.BigDecimal;
+import java.util.UUID;
 
 public class Sales {
 
     CartStorage cartStorage;
     ProductDetailsProvider productDetailsProvider;
+    DummyPaymentGateway paymentGateway;
+    ReservationStorage reservationStorage;
 
-    public Sales(CartStorage cartStorage, ProductDetailsProvider productDetailsProvider) {
-        this.cartStorage = cartStorage;
-        this.productDetailsProvider = productDetailsProvider;
-    }
+    public Sales(CartStorage cartStorage, ProductDetailsProvider productDetailsProvider, DummyPaymentGateway paymentGateway, ReservationStorage reservationStorage) {
+            this.cartStorage = cartStorage;
+            this.productDetailsProvider = productDetailsProvider;
+            this.paymentGateway = paymentGateway;
+            this.reservationStorage = reservationStorage;
+        }
 
-    public Offer getCurrentOffer(String customerId) {
-        Cart cart = cartStorage.getForCustomer(customerId)
-                .orElse(Cart.empty());
+        public Offer getCurrentOffer(String customerId) {
+            Cart cart = cartStorage.getForCustomer(customerId)
+                    .orElse(Cart.empty());
 
-        BigDecimal total = cart
-                .getItems()
-                .stream()
-                .map(this::calculateLineTotal)
-                .reduce(BigDecimal::add)
-                .orElse(BigDecimal.ZERO);
+            return calculateOffer(cart);
+        }
 
-        return Offer.of(total, cart.items.size());
-    }
+            private Offer calculateOffer(Cart cart) {
+                OfferMaker offerMaker = new OfferMaker();
+                return offerMaker.calculateOffer(cart);
+            }
 
-    private BigDecimal calculateLineTotal(CartItem cartItem) {
-        return cartItem.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity()));
-    }
+            public void addToCart(String customerId, String productId) {
+                Cart cart = cartStorage.getForCustomer(customerId)
+                        .orElse(Cart.empty());
+                ProductDetails productDetails = productDetailsProvider.findById(productId)
+                        .orElseThrow(() -> new ProductNotAvailableException());
+                cart.addItem(CartItem.of(
+                        productId,
+                        productDetails.name,
+                        productDetails.price));
+                cartStorage.save(customerId, cart);
+            }
 
-    public void addToCart(String customerId, String productId) {
-        Cart cart = cartStorage.getForCustomer(customerId)
-                .orElse(Cart.empty());
+            public PaymentData acceptOffer(String customerId, Offer seenOffer, ClientData clientData) {
+                Cart cart = cartStorage.getForCustomer(customerId)
+                        .orElse(Cart.empty());
 
-        ProductDetails productDetails = productDetailsProvider.findById(productId)
-                .orElseThrow(() -> new ProductNotAvailableException());
+                Offer currentOffer = calculateOffer(cart);
+                String id = UUID.randomUUID().toString();
+                Reservation reservation = Reservation.of(
+                        id,
+                        currentOffer.getTotal(),
+                        clientData
+                );
 
-        cart.addItem(CartItem.of(
-                productId,
-                productDetails.name,
-                productDetails.price));
+                PaymentData paymentData = reservation
+                        .registerPayment(paymentGateway);
 
-        cartStorage.save(customerId, cart);
-    }
+                reservationStorage.save(reservation);
 
-    public PaymentData acceptOffer(String customerId, Offer seenOffer, ClientData clientData){
-        return null;
-    }
-}
+                return paymentData;
+            }
+        }
