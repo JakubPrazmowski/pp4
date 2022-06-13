@@ -1,9 +1,11 @@
 package pl.jpraz.sales;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pl.jpraz.sales.offer.Offer;
+import pl.jpraz.sales.payment.PaymentData;
+
+import javax.servlet.http.HttpSession;
+import java.util.UUID;
 
 @RestController
 public class SalesController {
@@ -11,7 +13,7 @@ public class SalesController {
 
     Sales sales;
 
-    public SalesController(Sales sales) {
+    public SalesController(Sales sales, HttpSession httpSession) {
         this.sales = sales;
     }
 
@@ -25,7 +27,21 @@ public class SalesController {
         sales.addToCart(getCurrentCustomerId(), productId);
     }
 
+    @PostMapping("api/sales/accept-offer")
+    PaymentData acceptOffer(@RequestBody Offer seenOffer, ClientData clientData) {
+        //when //act
+        PaymentData payment = sales.acceptOffer(
+                getCurrentCustomerId(),
+                clientData
+        );
+        return payment;
+    }
+
     private String getCurrentCustomerId() {
-        return CUSTOMER_ID;
+        Object customerId = httpSession.getAttribute(s:"CUSTOMER_ID");
+
+        if (customerId == null) {
+            customerId = UUID.randomUUID().toString()
+        }
     }
 }

@@ -1,4 +1,4 @@
-package pl.jpraz.sales;
+package pl.jpraz.sales.payment;
 
 public class DummyPaymentGateway implements PaymentGateway {
     RegisterPaymentResponse handle(RegisterPaymentRequest registerPaymentRequest) {

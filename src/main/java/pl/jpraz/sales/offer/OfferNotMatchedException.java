@@ -1,4 +1,4 @@
-package pl.jpraz.sales;
+package pl.jpraz.sales.offer;
 
 
 public class OfferNotMatchedException extends IllegalStateException{

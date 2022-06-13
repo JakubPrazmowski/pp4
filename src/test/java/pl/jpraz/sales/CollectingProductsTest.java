@@ -2,6 +2,12 @@ package pl.jpraz.sales;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.jpraz.sales.cart.CartStorage;
+import pl.jpraz.sales.offer.Offer;
+import pl.jpraz.sales.payment.DummyPaymentGateway;
+import pl.jpraz.sales.products.ListProductDetailsProvider;
+import pl.jpraz.sales.products.ProductDetails;
+import pl.jpraz.sales.reservation.ReservationStorage;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

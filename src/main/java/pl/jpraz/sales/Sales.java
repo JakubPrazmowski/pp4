@@ -1,5 +1,18 @@
 package pl.jpraz.sales;
 
+import pl.jpraz.sales.cart.Cart;
+import pl.jpraz.sales.cart.CartItem;
+import pl.jpraz.sales.cart.CartStorage;
+import pl.jpraz.sales.offer.Offer;
+import pl.jpraz.sales.offer.OfferMaker;
+import pl.jpraz.sales.payment.DummyPaymentGateway;
+import pl.jpraz.sales.payment.PaymentData;
+import pl.jpraz.sales.products.ProductDetails;
+import pl.jpraz.sales.products.ProductDetailsProvider;
+import pl.jpraz.sales.products.ProductNotAvailableException;
+import pl.jpraz.sales.reservation.Reservation;
+import pl.jpraz.sales.reservation.ReservationStorage;
+
 import java.util.UUID;
 
 public class Sales {

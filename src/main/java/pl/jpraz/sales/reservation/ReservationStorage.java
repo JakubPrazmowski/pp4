@@ -1,4 +1,6 @@
-package pl.jpraz.sales;
+package pl.jpraz.sales.reservation;
+
+import pl.jpraz.sales.reservation.Reservation;
 
 import java.util.HashMap;
 import java.util.Map;

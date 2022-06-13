@@ -1,4 +1,4 @@
-package pl.jpraz.sales;
+package pl.jpraz.sales.payment;
 
 public interface PaymentGateway {
 }

@@ -1,4 +1,6 @@
-package pl.jpraz.sales;
+package pl.jpraz.sales.products;
+
+import pl.jpraz.sales.products.ProductDetails;
 
 import java.util.Optional;
 

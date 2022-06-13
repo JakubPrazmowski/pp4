@@ -1,4 +1,8 @@
-package pl.jpraz.sales;
+package pl.jpraz.sales.offer;
+
+import pl.jpraz.sales.cart.Cart;
+import pl.jpraz.sales.cart.CartItem;
+import pl.jpraz.sales.offer.Offer;
 
 import java.math.BigDecimal;
 

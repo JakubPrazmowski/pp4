@@ -8,6 +8,7 @@ import pl.jpraz.credit.NamesProvider;
 import pl.jpraz.product.ProductCatalog;
 import pl.jpraz.product.MapProductStorage;
 import pl.jpraz.product.ProductStorage;
+import pl.jpraz.sales.payment.PaymentGateway;
 
 import java.math.BigDecimal;
 
@@ -46,6 +47,13 @@ public class App {
         productCatalog.publish(productId2);
 
         return productCatalog;
+    }
+
+    @Bean
+    PaymentGateway createPaymentGateway() {
+        return new PayUPaymentGateway(
+                new PayU(System.getenv(name: "PayU_"))
+        )
     }
 
     @Bean

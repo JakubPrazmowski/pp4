@@ -1,9 +1,10 @@
-package pl.jpraz.sales;
+package pl.jpraz.sales.cart;
+
+import pl.jpraz.sales.cart.Cart;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 public class CartStorage {
     Map<String, Cart> carts;

@@ -1,5 +1,12 @@
-package pl.jpraz.sales;
+package pl.jpraz.sales.reservation;
 
+
+import pl.jpraz.sales.ClientData;
+import pl.jpraz.sales.CustomerInfo;
+import pl.jpraz.sales.payment.DummyPaymentGateway;
+import pl.jpraz.sales.payment.PaymentData;
+import pl.jpraz.sales.payment.RegisterPaymentRequest;
+import pl.jpraz.sales.payment.RegisterPaymentResponse;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
